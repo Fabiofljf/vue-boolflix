@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <input type="text" placeholder="search" v-model="search" />
-    <button type="submit" @click="getLink">Search</button>
+    <button type="submit" @click="callApi">Search</button>
     <div id="movie">
       <ul>
         <li></li>
@@ -18,27 +18,23 @@ export default {
   data() {
     return {
       search: null,
-      link: "https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=it-IT&page=1&include_adult=false&query=",
+      link: `https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=it-IT&page=1&include_adult=false&query=${this.search}`,
       movie: null,
     };
   },
   methods: {
-    getLink() {
-      //console.log(this.search);
-      this.link_Api = this.link += this.search; // - Ottengo il link Api per effettuare la chiamata
-      //console.log(this.link_Api);
-    },
-    getMovies() {
-      axios.get(this.link_Api).then((response) => {
+    callApi() {
+      axios
+      .get(this.link)
+      .then((response) => {
         console.log(response);
-        this.movie = response.data.response; // -
-        console.log(response.data.response);
+        //this.movie = response.data.response; // -
+        //console.log(response.data.response);
       });
     },
   },
   mounted() {
-    this.getLink()
-    this.getMovies()
+    this.callApi()
   },
 };
 </script>
