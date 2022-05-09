@@ -1,4 +1,12 @@
 <template>
+<!-- 
+  1. imposto degli input dove far scrivere la tipologia di ricerca(serie tv o film) e il titolo e li collego alla mia API (.get()).
+  2. Creo un bottone che al click genera una chiamata API.
+  3. Effettuo il ciclo al listItem sfruttando il condizionale perché le serie e i film hanno campi nel JSON di risposta diversi.
+  4. Sfrutto una libreria vue-country-flag (installata nella npm) per le bandiere.
+  5. Creo una funzione che sostituisce alpha-2 con alpha-3 quando non trova la corrispondenza.
+  6. Stampo a schermo la ricerca
+ -->
   <div id="app">
     <input type="text" placeholder="movie or tv" v-model="type" />
     <input type="text" placeholder="search" v-model="search" />
