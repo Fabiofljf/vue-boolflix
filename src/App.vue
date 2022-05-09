@@ -33,9 +33,7 @@ export default {
       });
     },
   },
-  mounted() {
-    this.callApi()
-  },
+  mounted() {},
 };
 </script>
 
