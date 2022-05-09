@@ -18,18 +18,18 @@ export default {
   data() {
     return {
       search: null,
-      link: `https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=it-IT&page=1&include_adult=false&query=${this.search}`,
-      movie: null,
+      movies: null,
     };
   },
   methods: {
     callApi() {
       axios
-      .get(this.link)
+      .get(`https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=it-IT&page=1&include_adult=false&query=${this.search}`)
       .then((response) => {
         console.log(response);
-        //this.movie = response.data.response; // -
-        //console.log(response.data.response);
+        console.log(response.data.results);
+        this.movies = response.data.response; // - Arrays dei films
+        console.log(this.movies);
       });
     },
   },
