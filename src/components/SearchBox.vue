@@ -1,12 +1,11 @@
 <template>
-  <form action="">
+  <form action="" @submit.prevent="$emit('getSearch')">
     <label for="Search">Search Movies</label>
     <input
       type="search"
       placeholder="search"
       :value="search"
-      @input="$emit('input', $event.target.value)"
-      @keyup="$emit('getSearch', search)"
+      @input="$emit('input', $event.target.value)" 
     />
     <button class="btn btn-outline-success" type="submit">Search</button>
   </form>
@@ -16,12 +15,9 @@
 
 export default {
   name: "SearchBox",
-  components: {},
-  data() {
-    return {
-      search: null,
-    };
-  },
+  props:{
+    search: String // - Mi serve per usare il v-model
+  }
 };
 </script>
 
