@@ -19,8 +19,8 @@ export default {
     return {
       search: null,
       link: "https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=it-IT&page=1&include_adult=false&query=",
-      movie: null
-    }
+      movie: null,
+    };
   },
   methods: {
     getLink() {
@@ -28,17 +28,16 @@ export default {
       this.link_Api = this.link += this.search; // - Ottengo il link Api per effettuare la chiamata
       //console.log(this.link_Api);
     },
-  },
-  link() {
-    axios.get(this.link_Api)
-    .then((response)=>{
-      console.log(response);
-      this.movie = response.data.response; // -
-      console.log(response.data.response);
-    })
+    getMovies() {
+      axios.get(this.link_Api).then((response) => {
+        console.log(response);
+        this.movie = response.data.response; // -
+        console.log(response.data.response);
+      });
+    },
   },
   mounted() {
-    this.link();
+    this.getMovies();
   },
 };
 </script>
