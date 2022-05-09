@@ -7,7 +7,7 @@
         <li>
           <h2>Titolo: {{movie.title}}</h2>
           <h3>Titolo originale: {{movie.original_title}}</h3>
-          <h4>Lingua: {{movie.original_language}}</h4>
+          <h4>Lingua: <country-flag country='{{movie.original_language}}' size='normal'/> </h4>
           <h5>Voto: {{movie.vote_average}}</h5>
         </li>
       </ul>
@@ -17,9 +17,13 @@
 
 <script>
 import axios from "axios";
+import CountryFlag from 'vue-country-flag'
 
 export default {
   name: "App",
+  components:{
+    CountryFlag
+  },
   data() {
     return {
       search: null,
