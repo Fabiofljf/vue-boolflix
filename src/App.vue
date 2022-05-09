@@ -37,7 +37,8 @@ export default {
     },
   },
   mounted() {
-    this.getMovies();
+    this.getLink()
+    this.getMovies()
   },
 };
 </script>
