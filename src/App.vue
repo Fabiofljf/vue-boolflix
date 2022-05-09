@@ -37,6 +37,9 @@ export default {
       console.log(response.data.response);
     })
   },
+  mounted() {
+    this.link();
+  },
 };
 </script>
 
