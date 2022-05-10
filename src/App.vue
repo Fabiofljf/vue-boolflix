@@ -6,6 +6,8 @@
   4. Sfrutto una libreria vue-country-flag (installata nella npm) per le bandiere.
   5. Creo una funzione che sostituisce alpha-2 con alpha-3 quando non trova la corrispondenza.
   6. Stampo a schermo la ricerca
+  7. aggiungo le img di copertina interpolando la variabile dinamica che mi richiama le img con la parte statica riferita alla dimensione.
+  8. Trasformo il voto, siccome va da 1 a 10 basta dividerlo per due per avere numeri interi da 1 a 5 e poi con una funzione li porto in difetto.
  -->
   <div id="app">
     <input type="text" placeholder="movie or tv" v-model="type" />
@@ -15,7 +17,7 @@
     <div id="movie" v-if="(this.type == 'movie')">
       <ul>
         <li v-for="(movie, index) in movies" :key="index">
-          <img :src="`http://image.tmdb.org/t/p/w500/${movie.backdrop_path}`" alt="copertina film">
+          <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="copertina film">
           <h2>Titolo: {{movie.title}}</h2>
           <h3>Titolo originale: {{movie.original_title}}</h3>
           <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
@@ -27,11 +29,11 @@
     <div id="serie" v-else>
       <ul>
         <li v-for="(movie, index) in movies" :key="index">
-          <img :src="`http://image.tmdb.org/t/p/w500/${movie.backdrop_path}`" alt="copertina serie">
+          <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="copertina serie">
           <h2>Titolo: {{movie.name}}</h2>
           <h3>Titolo originale: {{movie.original_name}}</h3>
           <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
-          <h5>Voto: {{movie.vote_average}}</h5>
+          <h5 >Voto: {{movie.vote_average}}</h5>
         </li>
       </ul>
     </div>
@@ -59,12 +61,13 @@ export default {
   methods: {
     callApi() {
       axios
-      .get(`https://api.themoviedb.org/3/search/${this.type}?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=it-IT&page=1&include_adult=false&query=${this.search}`)
+      .get(`https://api.themoviedb.org/3/search/${this.type}?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`)
       .then((response) => {
         //console.log(response);
         //console.log(response.data.results);
         this.movies = response.data.results; // - Arrays dei films
         //console.log(this.movies);
+        console.log(this.movies.vote_average);
       });
     },
     getFlag(flag) {
