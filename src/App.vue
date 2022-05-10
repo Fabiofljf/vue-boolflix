@@ -8,14 +8,18 @@
   6. Stampo a schermo la ricerca
   7. aggiungo le img di copertina interpolando la variabile dinamica che mi richiama le img con la parte statica riferita alla dimensione.
   8. Trasformo il voto, siccome va da 1 a 10 basta dividerlo per due per avere numeri interi da 1 a 5 e poi con una funzione li porto in difetto.
+  9. Imposto il layout con le card
+  10. Effetto all hover (descrizione)
+  11. Modifica componenti
  -->
   <div id="app">
     
     <section id="site_header">
       <div class="container-fluid m-0">
         <div class="row row-cols-2">
-          <div class="col">
-            <img src="./assets/img/netflix-logo.jpeg" alt="" />
+          <div class="col d-flex">
+            <LogoApp />
+            <MenuApp />
           </div>
           <!-- /.col img -->
           <div class="col d-flex justify-content-end">
@@ -70,6 +74,8 @@
 </template>
 
 <script>
+import LogoApp from "@/components/LogoApp.vue"
+import MenuApp from "@/components/MenuApp.vue"
 import "@/assets/scss/style.scss"; // - Importo lo style
 import axios from "axios"; // - Importo axios per la chiamata get
 import CountryFlag from "vue-country-flag"; // - Importo per l'inserimento delle bandiere
@@ -78,6 +84,8 @@ export default {
   name: "App",
   components: {
     CountryFlag,
+    LogoApp,
+    MenuApp,
   },
   data() {
     return {
