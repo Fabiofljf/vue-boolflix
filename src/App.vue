@@ -15,6 +15,7 @@
     <div id="movie" v-if="(this.type == 'movie')">
       <ul>
         <li v-for="(movie, index) in movies" :key="index">
+          <img :src="`http://image.tmdb.org/t/p/w500/${movie.backdrop_path}`" alt="copertina film">
           <h2>Titolo: {{movie.title}}</h2>
           <h3>Titolo originale: {{movie.original_title}}</h3>
           <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
@@ -23,9 +24,10 @@
       </ul>
     </div>
 
-    <div id="serie" else>
+    <div id="serie" v-else>
       <ul>
         <li v-for="(movie, index) in movies" :key="index">
+          <img :src="`http://image.tmdb.org/t/p/w500/${movie.backdrop_path}`" alt="copertina serie">
           <h2>Titolo: {{movie.name}}</h2>
           <h3>Titolo originale: {{movie.original_name}}</h3>
           <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
