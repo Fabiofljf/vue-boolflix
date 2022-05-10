@@ -33,7 +33,9 @@
           <h2>Titolo: {{movie.name}}</h2>
           <h3>Titolo originale: {{movie.original_name}}</h3>
           <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
-          <h5 >Voto: {{movie.vote_average}}</h5>
+          <h5>
+            <i v-for="star in getstars(i)" :key="star" class="fa-regular fa-star ms-1"></i>
+          </h5>
         </li>
       </ul>
     </div>
@@ -42,8 +44,9 @@
 </template>
 
 <script>
-import axios from "axios";
-import CountryFlag from 'vue-country-flag'
+import '@/assets/scss/style.scss' // - Importo lo style
+import axios from "axios"; // - Importo axios per la chiamata get
+import CountryFlag from 'vue-country-flag' // - Importo per l'inserimento delle bandiere
 
 export default {
   name: "App",
@@ -67,7 +70,7 @@ export default {
         //console.log(response.data.results);
         this.movies = response.data.results; // - Arrays dei films
         //console.log(this.movies);
-        console.log(this.movies.vote_average);
+        //console.log(this.movies[0].vote_average);
       });
     },
     getFlag(flag) {
@@ -75,7 +78,19 @@ export default {
       return flag;
     }
   },
-  computed: {},
+  computed: {
+    getstars(){
+      return this.movies.filter((movie) => {
+        return Math.round(movie.vote_average / 2)
+      })
+      // console.log(this.movies);
+      // console.log(this.movie);
+      // console.log(this.response.data.results.vote_average);
+      // console.log(this.movies[i]);
+      // console.log(i);
+      // return Math.round(this.movies[i].vote_average / 2)
+    }
+  },
   mounted() {},
 };
 </script>
