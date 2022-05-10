@@ -25,8 +25,8 @@
           <div class="col d-flex justify-content-end">
             <input type="text" placeholder="movie or tv" v-model="type" />
             <input type="text" placeholder="search" v-model="search" />
-            <button type="submit" @click="callApi" @keyup.enter="callApi">
-              Search
+            <button class="btn btn-primary" type="submit" @click="callApi" @keyup.enter="callApi">
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </button>
           </div>
           <!-- /.col search -->
@@ -117,55 +117,5 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  #site_header {
-    background-color: black;
-  }
-  .row {
-    height: 100px;
-    align-items: center;
-      .col {
-        img {
-          height: 100px;
-        }
-      }
-  }
-  #movie, #serie{
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    background-color: black;
-    .card{
-      width: calc((100% / 6) - 20px);
-      padding: 5px;
-      margin: 10px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 5px 0px grey;
-      background-color: transparent;
-      color: white;
-      position: relative;
-    }
-  }
-  .dettagli{
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #000000d4;
-    width: 100%;
-    height: 100%;
-  }
-  .card:hover .dettagli{
-    display: block;
-  }
-  h5{
-    svg{
-      path{
-        fill: yellow
-      }
-    }
-  }
-  
-}
+
 </style>
