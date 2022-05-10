@@ -51,13 +51,15 @@
       <div id="serie" v-else>
         <div class="card" v-for="(movie, index) in movies" :key="index">
           <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-          <h5>Titolo: {{movie.name}}</h5>
-          <h5>Titolo originale: {{movie.name}}</h5>
-          <h5>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
-          <h5>
-            Voto: 
-            <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
-          </h5>
+          <div class="dettagli">
+            <h5>Titolo: {{movie.name}}</h5>
+            <h5>Titolo originale: {{movie.name}}</h5>
+            <h5>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
+            <h5>
+              Voto: 
+              <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
+            </h5>
+          </div>
         </div>
       </div>
       <!-- /#serie -->
@@ -148,6 +150,13 @@ export default {
   }
   .card:hover .dettagli{
     display: block;
+  }
+  h5{
+    svg{
+      path{
+        fill: yellow
+      }
+    }
   }
   
 }
