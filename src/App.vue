@@ -10,66 +10,57 @@
   8. Trasformo il voto, siccome va da 1 a 10 basta dividerlo per due per avere numeri interi da 1 a 5 e poi con una funzione li porto in difetto.
  -->
   <div id="app">
-    <input type="text" placeholder="movie or tv" v-model="type" />
-    <input type="text" placeholder="search" v-model="search" />
-    <button type="submit" @click="callApi" @keyup.enter="callApi">
-      Search
-    </button>
+    
+    <section id="site_header">
+      <div class="container-fluid m-0">
+        <div class="row row-cols-2">
+          <div class="col">
+            <img src="./assets/img/netflix-logo.jpeg" alt="" />
+          </div>
+          <!-- /.col img -->
+          <div class="col d-flex justify-content-end">
+            <input type="text" placeholder="movie or tv" v-model="type" />
+            <input type="text" placeholder="search" v-model="search" />
+            <button type="submit" @click="callApi" @keyup.enter="callApi">
+              Search
+            </button>
+          </div>
+          <!-- /.col search -->
+        </div>
+      </div>
+    </section>
+    <!-- /#site_header -->
 
-    <div id="movie" v-if="this.type == 'movie'">
-      <ul>
-        <li v-for="(movie, index) in movies" :key="index">
-          <img
-            :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-            alt="copertina film"
-          />
-          <h2>Titolo: {{ movie.title }}</h2>
-          <h3>Titolo originale: {{ movie.original_title }}</h3>
-          <h4>
-            Lingua:
-            <country-flag
-              :country="getFlag(movie.original_language)"
-              size="normal"
-            />
-          </h4>
-          <h5>
-            Voto: {{star.vote_average}}
-            <i
-              v-for="(star, index) in getstars"
-              :key="index"
-              class="fa-regular fa-star ms-1"
-            ></i>
-          </h5>
-        </li>
-      </ul>
-    </div>
+    <section id="cards">
+      <div id="movie" v-if="this.type == 'movie'">
+          <div class="card" v-for="(movie, index) in movies" :key="index">
+            <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
+            <h5 class="p-1">Titolo: {{movie.title}}</h5>
+            <h5 class="p-1">Titolo originale: {{ movie.original_title }}</h5>
+            <h5 class="p-1">Lingua: <country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
+            <h5 class="p-1">
+              Voto: 
+              <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
+            </h5>
+          </div>
+      </div>
+      <!-- /#movie -->
 
-    <div id="serie" v-else>
-      <ul>
-        <li v-for="(movie, index) in movies" :key="index">
-          <img
-            :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-            alt="copertina serie"
-          />
-          <h2>Titolo: {{ movie.name }}</h2>
-          <h3>Titolo originale: {{ movie.original_name }}</h3>
-          <h4>
-            Lingua:
-            <country-flag
-              :country="getFlag(movie.original_language)"
-              size="normal"
-            />
-          </h4>
+      <div id="serie" v-else>
+        <div class="card" v-for="(movie, index) in movies" :key="index">
+          <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
+          <h3>Titolo: {{movie.name}}</h3>
+          <h4>Titolo originale: {{movie.name}}</h4>
+          <h4>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h4>
           <h5>
-            <i
-              v-for="star in getstars"
-              :key="star"
-              class="fa-regular fa-star ms-1"
-            ></i>
+            Voto: 
+            <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
           </h5>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
+      <!-- /#serie -->
+    </section>
+    <!-- /#cards -->
   </div>
 </template>
 
@@ -98,30 +89,49 @@ export default {
           `https://api.themoviedb.org/3/search/${this.type}?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`
         )
         .then((response) => {
-          //console.log(response);
-          //console.log(response.data.results);
           this.movies = response.data.results; // - Arrays dei films
-          //console.log(this.movies);
-          //console.log(this.movies[0].vote_average);
         });
     },
     getFlag(flag) {
       if (flag == "en") return "gb-eng";
       return flag;
     },
+    getstars(voto) {
+      return Math.round(voto / 2);
+    },
   },
-  computed: {
-    getstars() {
-      return this.movies.filter((movie) => {
-        return Math.round(movie.vote_average / 2);
-      });
-    }
-  }
 };
 </script>
 
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  #site_header {
+    background-color: black;
+  }
+  .row {
+    height: 100px;
+    align-items: center;
+      .col {
+        img {
+          height: 100px;
+        }
+      }
+  }
+  #movie{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: black;
+    .card{
+      width: calc((100% / 6) - 20px);
+      padding: 5px;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 5px 0px grey;
+      background-color: transparent;
+      color: white;
+    }
+  }
 }
 </style>

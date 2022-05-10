@@ -1,2 +1,13 @@
+// COMMON ROULES
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%
+}
+
 // IMPORT
 @import '~/node_modules/bootstrap/scss/bootstrap.scss';
