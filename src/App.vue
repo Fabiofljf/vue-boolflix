@@ -1,5 +1,5 @@
 <template>
-<!-- 
+  <!-- 
   1. imposto degli input dove far scrivere la tipologia di ricerca(serie tv o film) e il titolo e li collego alla mia API (.get()).
   2. Creo un bottone che al click genera una chiamata API.
   3. Effettuo il ciclo al listItem sfruttando il condizionale perché le serie e i film hanno campi nel JSON di risposta diversi.
@@ -12,16 +12,34 @@
   <div id="app">
     <input type="text" placeholder="movie or tv" v-model="type" />
     <input type="text" placeholder="search" v-model="search" />
-    <button type="submit" @click="callApi" @keyup.enter="callApi">Search</button>
+    <button type="submit" @click="callApi" @keyup.enter="callApi">
+      Search
+    </button>
 
-    <div id="movie" v-if="(this.type == 'movie')">
+    <div id="movie" v-if="this.type == 'movie'">
       <ul>
         <li v-for="(movie, index) in movies" :key="index">
-          <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="copertina film">
-          <h2>Titolo: {{movie.title}}</h2>
-          <h3>Titolo originale: {{movie.original_title}}</h3>
-          <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
-          <h5>Voto: {{movie.vote_average}}</h5>
+          <img
+            :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+            alt="copertina film"
+          />
+          <h2>Titolo: {{ movie.title }}</h2>
+          <h3>Titolo originale: {{ movie.original_title }}</h3>
+          <h4>
+            Lingua:
+            <country-flag
+              :country="getFlag(movie.original_language)"
+              size="normal"
+            />
+          </h4>
+          <h5>
+            Voto: {{star.vote_average}}
+            <i
+              v-for="(star, index) in getstars"
+              :key="index"
+              class="fa-regular fa-star ms-1"
+            ></i>
+          </h5>
         </li>
       </ul>
     </div>
@@ -29,69 +47,76 @@
     <div id="serie" v-else>
       <ul>
         <li v-for="(movie, index) in movies" :key="index">
-          <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="copertina serie">
-          <h2>Titolo: {{movie.name}}</h2>
-          <h3>Titolo originale: {{movie.original_name}}</h3>
-          <h4>Lingua: <country-flag :country='getFlag(movie.original_language)' size='normal'/> </h4>
+          <img
+            :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+            alt="copertina serie"
+          />
+          <h2>Titolo: {{ movie.name }}</h2>
+          <h3>Titolo originale: {{ movie.original_name }}</h3>
+          <h4>
+            Lingua:
+            <country-flag
+              :country="getFlag(movie.original_language)"
+              size="normal"
+            />
+          </h4>
           <h5>
-            <i v-for="star in getstars(i)" :key="star" class="fa-regular fa-star ms-1"></i>
+            <i
+              v-for="star in getstars"
+              :key="star"
+              class="fa-regular fa-star ms-1"
+            ></i>
           </h5>
         </li>
       </ul>
     </div>
   </div>
-
 </template>
 
 <script>
-import '@/assets/scss/style.scss' // - Importo lo style
+import "@/assets/scss/style.scss"; // - Importo lo style
 import axios from "axios"; // - Importo axios per la chiamata get
-import CountryFlag from 'vue-country-flag' // - Importo per l'inserimento delle bandiere
+import CountryFlag from "vue-country-flag"; // - Importo per l'inserimento delle bandiere
 
 export default {
   name: "App",
-  components:{
-    CountryFlag
+  components: {
+    CountryFlag,
   },
   data() {
     return {
       type: null,
       search: null,
       movies: null,
-      serietv: null
+      serietv: null,
     };
   },
   methods: {
     callApi() {
       axios
-      .get(`https://api.themoviedb.org/3/search/${this.type}?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`)
-      .then((response) => {
-        //console.log(response);
-        //console.log(response.data.results);
-        this.movies = response.data.results; // - Arrays dei films
-        //console.log(this.movies);
-        //console.log(this.movies[0].vote_average);
-      });
+        .get(
+          `https://api.themoviedb.org/3/search/${this.type}?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`
+        )
+        .then((response) => {
+          //console.log(response);
+          //console.log(response.data.results);
+          this.movies = response.data.results; // - Arrays dei films
+          //console.log(this.movies);
+          //console.log(this.movies[0].vote_average);
+        });
     },
     getFlag(flag) {
-      if(flag == 'en') return 'gb-eng';
+      if (flag == "en") return "gb-eng";
       return flag;
-    }
+    },
   },
   computed: {
-    getstars(){
+    getstars() {
       return this.movies.filter((movie) => {
-        return Math.round(movie.vote_average / 2)
-      })
-      // console.log(this.movies);
-      // console.log(this.movie);
-      // console.log(this.response.data.results.vote_average);
-      // console.log(this.movies[i]);
-      // console.log(i);
-      // return Math.round(this.movies[i].vote_average / 2)
+        return Math.round(movie.vote_average / 2);
+      });
     }
-  },
-  mounted() {},
+  }
 };
 </script>
 
