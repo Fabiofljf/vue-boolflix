@@ -35,13 +35,15 @@
       <div id="movie" v-if="this.type == 'movie'">
           <div class="card" v-for="(movie, index) in movies" :key="index">
             <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-            <h5 class="p-1">Titolo: {{movie.title}}</h5>
-            <h5 class="p-1">Titolo originale: {{ movie.original_title }}</h5>
-            <h5 class="p-1">Lingua: <country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
-            <h5 class="p-1">
-              Voto: 
-              <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
-            </h5>
+            <div class="dettagli">
+              <h5 class="p-1">Titolo: {{movie.title}}</h5>
+              <h5 class="p-1">Titolo originale: {{ movie.original_title }}</h5>
+              <h5 class="p-1">Lingua: <country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
+              <h5 class="p-1">
+                Voto: 
+                <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
+              </h5>
+            </div>
           </div>
       </div>
       <!-- /#movie -->
@@ -49,9 +51,9 @@
       <div id="serie" v-else>
         <div class="card" v-for="(movie, index) in movies" :key="index">
           <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-          <h3>Titolo: {{movie.name}}</h3>
-          <h4>Titolo originale: {{movie.name}}</h4>
-          <h4>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h4>
+          <h5>Titolo: {{movie.name}}</h5>
+          <h5>Titolo originale: {{movie.name}}</h5>
+          <h5>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
           <h5>
             Voto: 
             <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
@@ -59,6 +61,7 @@
         </div>
       </div>
       <!-- /#serie -->
+
     </section>
     <!-- /#cards -->
   </div>
@@ -118,7 +121,7 @@ export default {
         }
       }
   }
-  #movie{
+  #movie, #serie{
     display: flex;
     flex-wrap: wrap;
     padding: 20px;
@@ -131,7 +134,21 @@ export default {
       box-shadow: 0px 0px 5px 0px grey;
       background-color: transparent;
       color: white;
+      position: relative;
     }
   }
+  .dettagli{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000000d4;
+    width: 100%;
+    height: 100%;
+  }
+  .card:hover .dettagli{
+    display: block;
+  }
+  
 }
 </style>
