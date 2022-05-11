@@ -63,12 +63,15 @@ img {
     .text_style {
         background-color: $Bg-dark;
     }
-    .intro {
+    .menuNavBar {
         background-color: black;
         text-align: center;
-        padding: 50px;
+        padding: 10px;
         color: white;
         height: 100vh;
+    }
+    .form-select {
+        width: 200px;
     }
     body {
         background-color: black;
