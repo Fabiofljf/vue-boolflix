@@ -10,33 +10,19 @@
   8. Trasformo il voto, siccome va da 1 a 10 basta dividerlo per due per avere numeri interi da 1 a 5 e poi con una funzione li porto in difetto.
   9. Imposto il layout con le card
   10. Effetto all hover (descrizione)
-  11. Modifica componenti
+  11. Refactoring
  -->
   <div id="app">
     
-    <section id="site_header">
-      <div class="container-fluid m-0">
-        <div class="row row-cols-2">
-          <div class="col d-flex">
-            <LogoApp />
-            <MenuApp />
-          </div>
-          <!-- /.col img -->
-          <div class="col d-flex justify-content-end">
-            <input type="text" placeholder="search" v-model="search" />
-            <button class="btn btn-primary" type="submit" :class="btn" @click="callApi" @keyup.enter="callApi">
-              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-            </button>
-          </div>
-          <!-- /.col search -->
-        </div>
-      </div>
-    </section>
-    <!-- /#site_header -->
+    <!-- 
+      1. Uso la direttiva v-model per tenere traccia di quanto scritto nell'input.
+      2. importo il componente personalizzato che avrà come evento la mia funzione callApi.
+    -->
+    <SiteHeader v-model="search" @evento="callApi"/>
     
     <div class="loading">
       <div v-if=" btn == false">
-        <h1 class="intro">Effettua la tua ricerca</h1>
+        <h1 class="intro">Effettua la tua ricerca...</h1>
       </div>
 
       <div v-else>
@@ -85,29 +71,30 @@
 </template>
 
 <script>
-import LogoApp from "@/components/LogoApp.vue"
-import MenuApp from "@/components/MenuApp.vue"
+import SiteHeader from "@/components/SiteHearde.vue"; // - Importo il componente figlio
+// import LogoApp from "@/components/LogoApp.vue" // - (SPOSTATO IN SITEHEADER)
+// import MenuApp from "@/components/MenuApp.vue" // - (SPOSTATO IN SITEHEADER)
 import "@/assets/scss/style.scss"; // - Importo lo style
 import axios from "axios"; // - Importo axios per la chiamata get
 import CountryFlag from "vue-country-flag"; // - Importo per l'inserimento delle bandiere
-
 
 export default {
   name: "App",
   components: {
     CountryFlag,
-    LogoApp,
-    MenuApp,
+    //LogoApp, // - (SPOSTATO IN SITEHEADER)
+    //MenuApp, // - (SPOSTATO IN SITEHEADER)
+    SiteHeader,
   },
   data() {
     return {
       //type: null, // - tipo di ricerca (serie tv o film) (ANNULLATA DA PROMISE.ALL)
-      search: [], // - barra di ricerca, query string
+      search: null, // - barra di ricerca, query string (al momento vuota, aspetto in maniera dinamica il v-model che sovrascriverà i dati)
       movies: null, // - proprietà per accedere alla array film generata da Promise.all
       films: null, // - proprietà per accedere all'array e ciclarla.
       serie: null, // - proprietà per accedere alla array serie generata da Promise.all
       serietv: null, // - proprietà per accedere all'array e ciclarla.
-      btn: false
+      btn: false, // - (SPOSTATO IN SITEHEADER)
     };
   },
   methods: {
@@ -134,16 +121,17 @@ export default {
       const LinkSerie = `https://api.themoviedb.org/3/search/tv?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}` // - Chimata film
       return axios.get(LinkSerie)
     },
+    // - funzione che mi sostituisce le bandiere quando non le trova.
     getFlag(flag) {
       if (flag == "en") return "gb-eng";
       return flag;
     },
+    // - funzione che arrotonda il voto per eccesso una volta diviso.
     getstars(voto) {
       return Math.round(voto / 2);
     },
   },
 };
-
 </script>
 
 <style lang="scss">
