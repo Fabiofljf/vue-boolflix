@@ -23,7 +23,6 @@
           </div>
           <!-- /.col img -->
           <div class="col d-flex justify-content-end">
-            <input type="text" placeholder="movie or tv" v-model="type" />
             <input type="text" placeholder="search" v-model="search" />
             <button class="btn btn-primary" type="submit" @click="callApi" @keyup.enter="callApi">
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -36,8 +35,8 @@
     <!-- /#site_header -->
 
     <section id="cards">
-      <div id="movie" v-if="this.type == 'movie'">
-          <div class="card" v-for="(movie, index) in movies" :key="index">
+      <div id="movie">
+          <div class="card" v-for="(movie, index) in this.movies" :key="index">
             <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
             <div class="dettagli">
               <h5 class="p-1">Titolo: {{movie.title}}</h5>
@@ -52,8 +51,8 @@
       </div>
       <!-- /#movie -->
 
-      <div id="serie" v-else>
-        <div class="card" v-for="(movie, index) in movies" :key="index">
+      <div id="serie">
+        <div class="card" v-for="(movie, index) in this.serie" :key="index">
           <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
           <div class="dettagli">
             <h5>Titolo: {{movie.name}}</h5>
@@ -90,10 +89,10 @@ export default {
   },
   data() {
     return {
-      type: null, // - tipo di ricerca (serie tv o film)
+      //type: null, // - tipo di ricerca (serie tv o film) (ANNULLATA DA PROMISE.ALL)
       search: null, // - barra di ricerca, query string
-      movies: null, // - proprietà per accedere alla array
-      serietv: null,
+      movies: null, // - proprietà per accedere alla array film
+      serie: null, // - proprietà per accedere alla array serie
     };
   },
   methods: {
