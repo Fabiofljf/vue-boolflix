@@ -17,6 +17,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -25,6 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faUserSecret, faMagnifyingGlass)
 library.add(faStar)
 library.add(faBell)
+library.add(faCircleUser)
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)

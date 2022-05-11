@@ -27,7 +27,11 @@
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </button>
           </form>
-          <font-awesome-icon class="m-3" icon="fa-solid fa-bell" size="2x"/>
+          <div class="bell">
+            <font-awesome-icon class="m-3" icon="fa-solid fa-bell" size="2x" />
+            <div class="notifica"></div>
+          </div>
+          <font-awesome-icon class="m-1" icon="fa-solid fa-circle-user" size="2x" />
         </div>
         <!-- /.col search -->
       </div>
@@ -72,8 +76,22 @@ export default {
 }
 
 svg {
-            path {
-                fill: white;
-            }
-        }
+  path {
+    fill: white;
+  }
+}
+
+.bell{
+    position: relative;
+}
+
+.notifica{
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: red;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
 </style>
