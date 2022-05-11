@@ -13,15 +13,14 @@
   11. Refactoring
  -->
   <div id="app">
-    
     <!-- 
       1. Uso la direttiva v-model per tenere traccia di quanto scritto nell'input.
       2. importo il componente personalizzato che avrà come evento la mia funzione callApi.
     -->
-    <SiteHeader v-model="search" @evento="callApi"/>
-    
+    <SiteHeader v-model="search" @evento="callApi" />
+
     <div class="loading">
-      <div v-if=" this.search.length == 0">
+      <div v-if="this.search.length == 0">
         <h1 class="intro">Effettua la tua ricerca...</h1>
       </div>
 
@@ -29,62 +28,57 @@
         <section id="cards">
           <h1 class="text_style text-light m-0 p-2">Film</h1>
           <div id="movie">
-              <div class="card" v-for="(movie, index) in this.films" :key="index">
-                <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-                <div class="dettagli">
-                  <h5 class="p-1">Titolo: {{movie.title}}</h5>
-                  <h5 class="p-1">Titolo originale: {{ movie.original_title }}</h5>
-                  <h5 class="p-1">Lingua: <country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
-                  <h5 class="p-1">
-                    Voto: 
-                    <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
-                  </h5>
-                </div>
-              </div>
+            <ComposedCardMovie
+              :img="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+              :title="movie.title"
+              :original_title="movie.original_title"
+              :original_language="movie.original_language"
+              :vote_average="movie.vote_average"
+              v-for="(movie, index) in this.films"
+              :key="index"
+            />
           </div>
           <!-- /#movie -->
 
           <h1 class="text_style text-light m-0 p-2">Serie tv</h1>
           <div id="serie">
-            <div class="card" v-for="(movie, index) in this.serietv" :key="index">
-              <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-              <div class="dettagli">
-                <h5>Titolo: {{movie.name}}</h5>
-                <h5>Titolo originale: {{movie.name}}</h5>
-                <h5>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
-                <h5>
-                  Voto: 
-                  <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
-                </h5>
-              </div>
-            </div>
+            <ComposedCardSerie
+              :img="`http://image.tmdb.org/t/p/w500/${serie.poster_path}`"
+              :name="serie.name"
+              :original_name="serie.original_name"
+              :original_language="serie.original_language"
+              :vote_average="serie.vote_average"
+              v-for="(serie, index) in this.films"
+              :key="index"
+            />
           </div>
           <!-- /#serie -->
-
         </section>
         <!-- /#cards -->
-
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 import SiteHeader from "@/components/SiteHearde.vue"; // - Importo il componente figlio
+import ComposedCardMovie from "@/components/ComposedCardMovie.vue"; // - Importo il componente figlio
+import ComposedCardSerie from "@/components/ComposedCardSerie.vue"; // - Importo il componente figlio
 // import LogoApp from "@/components/LogoApp.vue" // - (SPOSTATO IN SITEHEADER)
 // import MenuApp from "@/components/MenuApp.vue" // - (SPOSTATO IN SITEHEADER)
 import "@/assets/scss/style.scss"; // - Importo lo style
 import axios from "axios"; // - Importo axios per la chiamata get
-import CountryFlag from "vue-country-flag"; // - Importo per l'inserimento delle bandiere
+//import CountryFlag from "vue-country-flag"; // - Importo per l'inserimento delle bandiere (SPOSTATO IN COMPOSED CARD)
 
 export default {
   name: "App",
   components: {
-    CountryFlag,
+    //CountryFlag,
     //LogoApp, // - (SPOSTATO IN SITEHEADER)
     //MenuApp, // - (SPOSTATO IN SITEHEADER)
     SiteHeader,
+    ComposedCardMovie,
+    ComposedCardSerie,
   },
   data() {
     return {
@@ -99,51 +93,52 @@ export default {
   methods: {
     callApi() {
       // - Chiedo al server 2 risultati contemporaneamente.
-      Promise.all([this.getLinkApi_movie(), this.getLinkApi_serie()])
-        .then((response) => {
+      Promise.all([this.getLinkApi_movie(), this.getLinkApi_serie()]).then(
+        (response) => {
           //console.log(response); // - Ottengo un array con dentro 2 array. La prima per i film la seconda pe rle serie
-          //console.log(response[0]); 
+          //console.log(response[0]);
           this.movies = response[0]; // - Arrays dei films
           //console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
-          this.films = this.movies.data.results
+          this.films = this.movies.data.results;
           this.serie = response[1]; // - Array delle serie
-          this.serietv = this.serie.data.results
-        });
+          this.serietv = this.serie.data.results;
+        }
+      );
     },
     // - funzioni che mi restituiscono i link Api.
-    getLinkApi_movie(){
-      const LinkMovie = `https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}` // - Chimata film
-      return axios.get(LinkMovie)
+    getLinkApi_movie() {
+      const LinkMovie = `https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`; // - Chimata film
+      return axios.get(LinkMovie);
     },
-    getLinkApi_serie(){
-      const LinkSerie = `https://api.themoviedb.org/3/search/tv?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}` // - Chimata film
-      return axios.get(LinkSerie)
+    getLinkApi_serie() {
+      const LinkSerie = `https://api.themoviedb.org/3/search/tv?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`; // - Chimata film
+      return axios.get(LinkSerie);
     },
     // - funzione che mi sostituisce le bandiere quando non le trova.
-    getFlag(flag) {
-      if (flag == "en") return "gb-eng";
-      return flag;
-    },
+    // getFlag(flag) {
+    //   if (flag == "en") return "gb-eng";
+    //   return flag;
+    // },
     // - funzione che arrotonda il voto per eccesso una volta diviso.
-    getstars(voto) {
-      return Math.round(voto / 2);
-    },
+    // getstars(voto) {
+    //   return Math.round(voto / 2);
+    // },
   },
 };
 </script>
 
 <style lang="scss">
-.text_style{
+.text_style {
   background-color: $Bg-dark;
 }
-.intro{
+.intro {
   background-color: black;
   text-align: center;
   padding: 50px;
   color: white;
   height: 100vh;
 }
-body{
+body {
   background-color: black;
 }
 </style>
