@@ -24,7 +24,7 @@
           <!-- /.col img -->
           <div class="col d-flex justify-content-end">
             <input type="text" placeholder="search" v-model="search" />
-            <button class="btn btn-primary" type="submit" @click="callApi" @keyup.enter="callApi">
+            <button class="btn btn-primary" type="submit" :class="btn" @click="callApi" @keyup.enter="callApi">
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </button>
           </div>
@@ -33,44 +33,54 @@
       </div>
     </section>
     <!-- /#site_header -->
+    
+    <div class="loading">
+      <div v-if=" btn == false">
+        <h1 class="intro">Effettua la tua ricerca</h1>
+      </div>
 
-    <section id="cards">
-      <h1 class="text_style text-light m-0 p-2">Film</h1>
-      <div id="movie">
-          <div class="card" v-for="(movie, index) in this.films" :key="index">
-            <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-            <div class="dettagli">
-              <h5 class="p-1">Titolo: {{movie.title}}</h5>
-              <h5 class="p-1">Titolo originale: {{ movie.original_title }}</h5>
-              <h5 class="p-1">Lingua: <country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
-              <h5 class="p-1">
-                Voto: 
-                <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
-              </h5>
+      <div v-else>
+        <section id="cards">
+          <h1 class="text_style text-light m-0 p-2">Film</h1>
+          <div id="movie">
+              <div class="card" v-for="(movie, index) in this.films" :key="index">
+                <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
+                <div class="dettagli">
+                  <h5 class="p-1">Titolo: {{movie.title}}</h5>
+                  <h5 class="p-1">Titolo originale: {{ movie.original_title }}</h5>
+                  <h5 class="p-1">Lingua: <country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
+                  <h5 class="p-1">
+                    Voto: 
+                    <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
+                  </h5>
+                </div>
+              </div>
+          </div>
+          <!-- /#movie -->
+
+          <h1 class="text_style text-light m-0 p-2">Serie tv</h1>
+          <div id="serie">
+            <div class="card" v-for="(movie, index) in this.serietv" :key="index">
+              <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
+              <div class="dettagli">
+                <h5>Titolo: {{movie.name}}</h5>
+                <h5>Titolo originale: {{movie.name}}</h5>
+                <h5>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
+                <h5>
+                  Voto: 
+                  <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
+                </h5>
+              </div>
             </div>
           </div>
-      </div>
-      <!-- /#movie -->
+          <!-- /#serie -->
 
-      <h1 class="text_style text-light m-0 p-2">Serie tv</h1>
-      <div id="serie">
-        <div class="card" v-for="(movie, index) in this.serietv" :key="index">
-          <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
-          <div class="dettagli">
-            <h5>Titolo: {{movie.name}}</h5>
-            <h5>Titolo originale: {{movie.name}}</h5>
-            <h5>Lingua:<country-flag :country="getFlag(movie.original_language)" size="normal"/></h5>
-            <h5>
-              Voto: 
-              <font-awesome-icon icon="fa-solid fa-star" v-for="(star, index) in getstars(movie.vote_average)" :key="index"/>
-            </h5>
-          </div>
-        </div>
-      </div>
-      <!-- /#serie -->
+        </section>
+        <!-- /#cards -->
 
-    </section>
-    <!-- /#cards -->
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -92,11 +102,12 @@ export default {
   data() {
     return {
       //type: null, // - tipo di ricerca (serie tv o film) (ANNULLATA DA PROMISE.ALL)
-      search: null, // - barra di ricerca, query string
+      search: [], // - barra di ricerca, query string
       movies: null, // - proprietà per accedere alla array film generata da Promise.all
       films: null, // - proprietà per accedere all'array e ciclarla.
       serie: null, // - proprietà per accedere alla array serie generata da Promise.all
       serietv: null, // - proprietà per accedere all'array e ciclarla.
+      btn: false
     };
   },
   methods: {
@@ -111,6 +122,7 @@ export default {
           this.films = this.movies.data.results
           this.serie = response[1]; // - Array delle serie
           this.serietv = this.serie.data.results
+          this.btn = true
         });
     },
     // - funzioni che mi restituiscono i link Api.
@@ -137,5 +149,12 @@ export default {
 <style lang="scss">
 .text_style{
   background-color: $Bg-dark;
+}
+.intro{
+  background-color: black;
+  text-align: center;
+  padding: 50px;
+  color: white;
+  height: 100vh;
 }
 </style>
