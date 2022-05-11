@@ -143,4 +143,7 @@ export default {
   color: white;
   height: 100vh;
 }
+body{
+  background-color: black;
+}
 </style>
