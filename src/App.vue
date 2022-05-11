@@ -36,7 +36,7 @@
 
     <section id="cards">
       <div id="movie">
-          <div class="card" v-for="(movie, index) in this.movies.data.results" :key="index">
+          <div class="card" v-for="(movie, index) in films" :key="index">
             <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
             <div class="dettagli">
               <h5 class="p-1">Titolo: {{movie.title}}</h5>
@@ -93,6 +93,7 @@ export default {
       search: null, // - barra di ricerca, query string
       movies: null, // - proprietà per accedere alla array film
       serie: null, // - proprietà per accedere alla array serie
+      films: null
     };
   },
   methods: {
@@ -103,7 +104,8 @@ export default {
           //console.log(response); // - Ottengo un array con dentro 2 array. La prima per i film la seconda pe rle serie
           //console.log(response[0]); 
           this.movies = response[0]; // - Arrays dei films
-          console.log(this.movies.data.results);
+          console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
+          this.films = this.movies.data.results
           this.serie = response[1]; // - Array delle serie
         });
     },
