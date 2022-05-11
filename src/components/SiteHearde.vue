@@ -69,6 +69,7 @@ export default {
   margin: 10px;
   transition-property: all;
   transition-duration: 2s;
+  color: white;
 }
 
 .ricerca:hover {
