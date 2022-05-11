@@ -36,7 +36,7 @@
 
     <section id="cards">
       <div id="movie">
-          <div class="card" v-for="(movie, index) in films" :key="index">
+          <div class="card" v-for="(movie, index) in this.films" :key="index">
             <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
             <div class="dettagli">
               <h5 class="p-1">Titolo: {{movie.title}}</h5>
@@ -51,7 +51,7 @@
       </div>
       <!-- /#movie -->
 
-      <div id="serie">
+      <!-- <div id="serie">
         <div class="card" v-for="(movie, index) in this.serie" :key="index">
           <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
           <div class="dettagli">
@@ -64,7 +64,7 @@
             </h5>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- /#serie -->
 
     </section>
@@ -104,7 +104,7 @@ export default {
           //console.log(response); // - Ottengo un array con dentro 2 array. La prima per i film la seconda pe rle serie
           //console.log(response[0]); 
           this.movies = response[0]; // - Arrays dei films
-          console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
+          //console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
           this.films = this.movies.data.results
           this.serie = response[1]; // - Array delle serie
         });
