@@ -35,6 +35,7 @@
     <!-- /#site_header -->
 
     <section id="cards">
+      <h1 class="text_style text-light m-0 p-2">Film</h1>
       <div id="movie">
           <div class="card" v-for="(movie, index) in this.films" :key="index">
             <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
@@ -51,8 +52,9 @@
       </div>
       <!-- /#movie -->
 
-      <!-- <div id="serie">
-        <div class="card" v-for="(movie, index) in this.serie" :key="index">
+      <h1 class="text_style text-light m-0 p-2">Serie tv</h1>
+      <div id="serie">
+        <div class="card" v-for="(movie, index) in this.serietv" :key="index">
           <img :src="`http://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="Immagine di copertina">
           <div class="dettagli">
             <h5>Titolo: {{movie.name}}</h5>
@@ -64,7 +66,7 @@
             </h5>
           </div>
         </div>
-      </div> -->
+      </div>
       <!-- /#serie -->
 
     </section>
@@ -91,9 +93,10 @@ export default {
     return {
       //type: null, // - tipo di ricerca (serie tv o film) (ANNULLATA DA PROMISE.ALL)
       search: null, // - barra di ricerca, query string
-      movies: null, // - proprietà per accedere alla array film
-      serie: null, // - proprietà per accedere alla array serie
-      films: null
+      movies: null, // - proprietà per accedere alla array film generata da Promise.all
+      films: null, // - proprietà per accedere all'array e ciclarla.
+      serie: null, // - proprietà per accedere alla array serie generata da Promise.all
+      serietv: null, // - proprietà per accedere all'array e ciclarla.
     };
   },
   methods: {
@@ -107,6 +110,7 @@ export default {
           //console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
           this.films = this.movies.data.results
           this.serie = response[1]; // - Array delle serie
+          this.serietv = this.serie.data.results
         });
     },
     // - funzioni che mi restituiscono i link Api.
@@ -131,5 +135,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+.text_style{
+  background-color: $Bg-dark;
+}
 </style>

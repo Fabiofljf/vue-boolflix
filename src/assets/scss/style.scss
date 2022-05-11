@@ -28,7 +28,7 @@ img {
     #serie {
         display: flex;
         flex-wrap: wrap;
-        padding: 100px;
+        padding: 30px 100px 50px;
         background-color: black;
         .card {
             width: calc((100% / 6) - 20px);
