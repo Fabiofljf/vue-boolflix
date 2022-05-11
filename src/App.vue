@@ -21,7 +21,7 @@
     <SiteHeader v-model="search" @evento="callApi"/>
     
     <div class="loading">
-      <div v-if=" btn == false">
+      <div v-if=" this.search.length == 0">
         <h1 class="intro">Effettua la tua ricerca...</h1>
       </div>
 
@@ -89,12 +89,11 @@ export default {
   data() {
     return {
       //type: null, // - tipo di ricerca (serie tv o film) (ANNULLATA DA PROMISE.ALL)
-      search: null, // - barra di ricerca, query string (al momento vuota, aspetto in maniera dinamica il v-model che sovrascriverà i dati)
+      search: [], // - barra di ricerca, query string (al momento vuota, aspetto in maniera dinamica il v-model che sovrascriverà i dati)
       movies: null, // - proprietà per accedere alla array film generata da Promise.all
       films: null, // - proprietà per accedere all'array e ciclarla.
       serie: null, // - proprietà per accedere alla array serie generata da Promise.all
       serietv: null, // - proprietà per accedere all'array e ciclarla.
-      btn: false, // - (SPOSTATO IN SITEHEADER)
     };
   },
   methods: {
@@ -109,7 +108,6 @@ export default {
           this.films = this.movies.data.results
           this.serie = response[1]; // - Array delle serie
           this.serietv = this.serie.data.results
-          this.btn = true
         });
     },
     // - funzioni che mi restituiscono i link Api.
