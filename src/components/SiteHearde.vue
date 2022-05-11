@@ -7,8 +7,8 @@
           <MenuApp />
         </div>
         <!-- /.col img -->
-        <div class="col d-flex justify-content-end">
-            <!-- 
+        <div class="col d-flex justify-content-end align-items-center">
+          <!-- 
                 1. evento personalizzato da importare nel genitore.
                 2. v-bind - resta in ascolto del v-model nel componente padre.
                 3. v-on - $event.target.value prende in considerazione l'ultima modifica apportata al value.
@@ -16,6 +16,7 @@
             -->
           <form @submit.prevent="$emit(evento)">
             <input
+              class="ricerca"
               type="text"
               placeholder="search"
               :value="search"
@@ -26,6 +27,7 @@
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </button>
           </form>
+          <font-awesome-icon class="m-3" icon="fa-solid fa-bell" size="2x"/>
         </div>
         <!-- /.col search -->
       </div>
@@ -46,9 +48,32 @@ export default {
   },
   props: {
     search: String, // - Passo il valore della proprietà da padre in figlio
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.btn {
+  border-radius: 20px;
+}
+.ricerca {
+  width: 100px;
+  background-color: #000000;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px white;
+  padding: 1px;
+  margin: 10px;
+  transition-property: all;
+  transition-duration: 2s;
+}
+
+.ricerca:hover {
+  width: 200px;
+}
+
+svg {
+            path {
+                fill: white;
+            }
+        }
 </style>

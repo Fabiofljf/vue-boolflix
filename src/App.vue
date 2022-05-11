@@ -128,17 +128,5 @@ export default {
 </script>
 
 <style lang="scss">
-.text_style {
-  background-color: $Bg-dark;
-}
-.intro {
-  background-color: black;
-  text-align: center;
-  padding: 50px;
-  color: white;
-  height: 100vh;
-}
-body {
-  background-color: black;
-}
+
 </style>
