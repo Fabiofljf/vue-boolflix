@@ -80,6 +80,7 @@ import "@/assets/scss/style.scss"; // - Importo lo style
 import axios from "axios"; // - Importo axios per la chiamata get
 import CountryFlag from "vue-country-flag"; // - Importo per l'inserimento delle bandiere
 
+
 export default {
   name: "App",
   components: {
@@ -89,21 +90,31 @@ export default {
   },
   data() {
     return {
-      type: null,
-      search: null,
-      movies: null,
+      type: null, // - tipo di ricerca (serie tv o film)
+      search: null, // - barra di ricerca, query string
+      movies: null, // - proprietà per accedere alla array
       serietv: null,
     };
   },
   methods: {
     callApi() {
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/${this.type}?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`
-        )
+      // - Chiedo al server 2 risultati contemporaneamente.
+      Promise.all([this.getLinkApi_movie(), this.getLinkApi_serie()])
         .then((response) => {
-          this.movies = response.data.results; // - Arrays dei films
+          //console.log(response); // - Ottengo un array con dentro 2 array. La prima per i film la seconda pe rle serie
+          //console.log(response[0]); 
+          this.movies = response[0]; // - Arrays dei films
+          this.serie = response[1]; // - Array delle serie
         });
+    },
+    // - funzioni che mi restituiscono i link Api.
+    getLinkApi_movie(){
+      const LinkMovie = `https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}` // - Chimata film
+      return axios.get(LinkMovie)
+    },
+    getLinkApi_serie(){
+      const LinkSerie = `https://api.themoviedb.org/3/search/tv?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}` // - Chimata film
+      return axios.get(LinkSerie)
     },
     getFlag(flag) {
       if (flag == "en") return "gb-eng";
@@ -114,6 +125,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style lang="scss">
