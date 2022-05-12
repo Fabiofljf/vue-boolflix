@@ -5,22 +5,22 @@
       alt="Immagine di copertina"
     />
     <div class="dettagli">
-      <h5>Titolo: {{ name }}</h5>
-      <h5>Titolo originale: {{ name }}</h5>
-      <h5>
+      <h6>Titolo: {{ name }}</h6>
+      <h6>Titolo originale: {{ name }}</h6>
+      <h6>
         Lingua:<country-flag
           :country="getFlag(original_language)"
           size="normal"
         />
-      </h5>
-      <h5>
+      </h6>
+      <h6>
         Voto:
         <font-awesome-icon
           icon="fa-solid fa-star"
           v-for="(star, index) in getstars(vote_average)"
           :key="index"
         />
-      </h5>
+      </h6>
     </div>
   </div>
 </template>

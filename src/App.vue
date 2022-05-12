@@ -32,11 +32,17 @@
                 v-for="({ name }, index) in this.genereMovie"
                 :key="index"
               >
-                {{ name }}s
+                {{ name }}
               </option>
             </select>
           </div>
         </div>
+        <!-- <div class="aSchermo" v-if="id == ids">
+          <div class="card">
+            <img :src="img" alt="Immagine di copertina" />
+          </div>
+        </div> -->
+        <!-- /.aSchermo -->
       </div>
 
       <div v-else>
@@ -49,6 +55,7 @@
               :original_title="movie.original_title"
               :original_language="movie.original_language"
               :vote_average="movie.vote_average"
+              :id="movie.id"
               v-for="(movie, index) in this.films"
               :key="index"
             />
@@ -103,33 +110,33 @@ export default {
       films: null, // - proprietà per accedere all'array e ciclarla.
       serie: null, // - proprietà per accedere alla array serie generata da Promise.all
       serietv: null, // - proprietà per accedere all'array e ciclarla.
-      genereMovie: null,
+      genereMovie: null, // - proprietà per accedere all'array e ciclarla.
     };
   },
   methods: {
     callApi() {
       // - Chiedo al server 2 risultati contemporaneamente.
-      Promise.all([
-        this.getLinkApi_movie(),
-        this.getLinkApi_serie(),
-        this.getLinkApi_genereMovie(),
-      ]).then((response) => {
-        //console.log(response); // - Ottengo un array con dentro 2 array. La prima per i film la seconda pe rle serie
-        //console.log(response[0]);
-        this.movies = response[0]; // - Arrays dei films
-        //console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
-        this.films = this.movies.data.results;
-        this.serie = response[1]; // - Array delle serie
-        this.serietv = this.serie.data.results;
-      });
+      Promise.all([this.getLinkApi_movie(), this.getLinkApi_serie()]).then(
+        (response) => {
+          //console.log(response); // - Ottengo un array con dentro 2 array. La prima per i film la seconda pe rle serie
+          //console.log(response[0]);
+          this.movies = response[0]; // - Arrays dei films
+          //console.log(this.movies.data.results); // - oggetto dell'array con all'array interna dove ci sono i film
+          this.films = this.movies.data.results;
+          this.serie = response[1]; // - Array delle serie
+          this.serietv = this.serie.data.results;
+        }
+      );
     },
     callApiGenere() {
-        axios
-        .get("https://api.themoviedb.org/3/genre/movie/list?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-US")
-        .then((response)=>{
+      axios
+        .get(
+          "https://api.themoviedb.org/3/genre/movie/list?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-US"
+        )
+        .then((response) => {
           this.genereMovie = response.data.genres;
-        })
-      },
+        });
+    },
     // - funzioni che mi restituiscono i link Api.
     getLinkApi_movie() {
       const LinkMovie = `https://api.themoviedb.org/3/search/movie?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`; // - Chimata film
@@ -138,20 +145,11 @@ export default {
     getLinkApi_serie() {
       const LinkSerie = `https://api.themoviedb.org/3/search/tv?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-EN&page=1&include_adult=false&query=${this.search}`; // - Chimata film
       return axios.get(LinkSerie);
-    }
-    // - funzione che mi sostituisce le bandiere quando non le trova.
-    // getFlag(flag) {
-    //   if (flag == "en") return "gb-eng";
-    //   return flag;
-    // },
-    // - funzione che arrotonda il voto per eccesso una volta diviso.
-    // getstars(voto) {
-    //   return Math.round(voto / 2);
-    // },
+    },
   },
   mounted() {
-    this.callApiGenere()
-  }
+    this.callApiGenere();
+  },
 };
 </script>
 
