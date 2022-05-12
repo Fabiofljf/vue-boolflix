@@ -8,8 +8,10 @@
         Lingua:
         <country-flag :country="getFlag(original_language)" size="normal" />
       </h6>
-      <div class="p-1" :class="getCast(id)" v-for="(actor, index) in getCast(id)" :key="index">
-        <h6 class="p-1">Cast:name{{actor.name}}</h6>
+      <div class="p-1" :class="getCast(id)">
+        <h6>Actor: {{this.ArrayNomiAttori[0].name}}</h6>
+        <h6>Actor: {{this.ArrayNomiAttori[1].name}}</h6>
+        <h6>Actor: {{this.ArrayNomiAttori[2].name}}</h6>
       </div>
       <h6 class="p-1">
         Voto:
@@ -35,7 +37,8 @@ export default {
   data() {
     return {
       ArrayNomiAttori: [], // - proprietà per accedere all'array che comprende le array con i nomi degli attori
-      ArrayAttori: [], // - Array di attori
+      //ArrayAttori: [], // - Array di attori
+      index: 0
     };
   },
   props: {
@@ -60,14 +63,17 @@ export default {
     getCast(cast) {
       const LinkCast = `https://api.themoviedb.org/3/movie/${cast}/credits?api_key=40a522c8e1eb2b9eb0188889f1def2c9&language=en-US`;
       axios.get(LinkCast).then((response) => {
-        //console.log(response); // - Array generica
+        console.log(response); // - Array generica
         this.ArrayNomiAttori = response.data.cast
-        console.log(this.ArrayNomiAttori); // - Array contentente per ogni film tutti gli attori
+        console.log(this.ArrayNomiAttori); // - Array contentente per ogni film le info
+        console.log(this.ArrayNomiAttori[0]); // - Array contentente per ogni le info degli attori
+        console.log(this.ArrayNomiAttori[0].name); // - Il primo nome di ogni film
+
         // if(this.ArrayNomiAttori.length < 3){
         //   this.ArrayAttori.push(this.ArrayNomiAttori)
         //   console.log(this.ArrayAttori);
         //}
-        // for (let i = 0; this.ArrayNomiAttori.length < 3; i++) {
+        // for (let i = 0; this.ArrayNomiAttori.length <= 3; i++) {
         //   this.ArrayAttori += this.ArrayNomiAttori[i];
         //   console.log(this.ArrayNomiAttori[i]);
         //   console.log(this.ArrayAttori);
